@@ -1,25 +1,44 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+title: "Reproducible Data Peer Review 1"
+output: html_document
 ---
 
 
-## Loading and preprocessing the data
+```{r}
+setwd("C:\\Users\\chenwei\\Desktop\\R")
+activitydata<-read.csv("C:\\Users\\chenwei\\Desktop\\R\\activity.csv")
+activitydata$date<-as.Date(activitydata$date,"%Y-%m-%d")
+library(lattice)
+library(scales)
+library(Hmisc)
 
+stepsTakenByDay<-aggregate(steps ~ date, data = activitydata, sum, na.rm = TRUE)
+hist(stepsTakenByDay$steps,main = "Total Steps Taken Per Day",xlab = "Day")
 
+mean(stepsTakenByDay$steps)
+median(stepsTakenByDay$steps)
 
-## What is mean total number of steps taken per day?
+timeseries <- tapply(activitydata$steps, activitydata$interval, mean, na.rm = TRUE)
+plot(row.names(timeseries),timeseries,type = "l",xlab="5-min interval",
+     ylab = "Average across all Days",main = "Average number of steps")
 
+maxsteps <- which.max(timeseries)
+names(maxsteps)
 
+activitydata_NA <- sum(is.na(activitydata))
+activitydata_NA
 
-## What is the average daily activity pattern?
+activitydataImputed <- activitydata
+activitydataImputed$steps <- impute(activitydata$steps, fun = mean)
 
+stepsTakenByDay2 <- aggregate(steps ~ date, data = activitydataImputed, sum, na.rm = TRUE)
+hist(stepsTakenByDay2$steps, main = "Total steps by day", xlab = "day")
 
+mean(stepsTakenByDay2$steps)
+median(stepsTakenByDay2$steps)
 
-## Imputing missing values
-
-
-
-## Are there differences in activity patterns between weekdays and weekends?
+activitydataImputed$dateType <-  ifelse(as.POSIXlt(activitydataImputed$date)$wday %in% c(0,6), 'weekend', 'weekday')
+averagedactivityImputed <- aggregate(steps ~ interval + dateType, data=activitydataImputed, mean)
+ggplot(averagedactivityImputed, aes(interval, steps)) + geom_line() + 
+        facet_grid(dateType ~ .) + xlab("5-minute interval") + ylab("avarage number of steps")
+```
