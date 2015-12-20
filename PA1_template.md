@@ -17,7 +17,7 @@ stepsTakenByDay<-aggregate(steps ~ date, data = activitydata, sum, na.rm = TRUE)
 hist(stepsTakenByDay$steps,main = "Total Steps Taken Per Day",xlab = "Day")
 ```
 
-![plot of chunk unnamed-chunk-1](RepData_PeerAssessment1/figure/steps per day.png) 
+![plot of chunk unnamed-chunk-1](figure/steps per day.png) 
 
 ```r
 mean(stepsTakenByDay$steps)
@@ -44,7 +44,7 @@ plot(row.names(timeseries),timeseries,type = "l",xlab="5-min interval",
      ylab = "Average across all Days",main = "Average number of steps")
 ```
 
-![plot of chunk unnamed-chunk-2](RepData_PeerAssessment1/figure/average steps.png) 
+![plot of chunk unnamed-chunk-2](figure/average steps.png) 
 
 
 On average across all the days in the dataset, the 5-minute interval contains
@@ -93,7 +93,7 @@ stepsTakenByDay2 <- aggregate(steps ~ date, data = activitydataImputed, sum, na.
 hist(stepsTakenByDay2$steps, main = "Total steps by day", xlab = "day")
 ```
 
-![plot of chunk unnamed-chunk-5](RepData_PeerAssessment1/figure/total steps by day.png) 
+![plot of chunk unnamed-chunk-5](figure/total steps by day.png) 
 
 ```r
 mean(stepsTakenByDay2$steps)
@@ -134,5 +134,5 @@ ggplot(averagedactivityImputed, aes(interval, steps)) + geom_line() +
         facet_grid(dateType ~ .) + xlab("5-minute interval") + ylab("avarage number of steps")
 ```
 
-![plot of chunk unnamed-chunk-7](RepData_PeerAssessment1/figure/average steps.png) 
+![plot of chunk unnamed-chunk-7](figure/average number of steps.png) 
 
